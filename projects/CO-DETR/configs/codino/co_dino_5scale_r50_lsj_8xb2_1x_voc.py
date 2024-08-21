@@ -6,7 +6,22 @@ custom_imports = dict(
 # model settings
 num_dec_layer = 6
 loss_lambda = 2.0
-num_classes = 3
+num_classes = 20
+
+data_root = '/home/Huangzhe/test/voc_coco/'
+metainfo = {
+    'classes':
+        ('aeroplane', 'bicycle', 'bird', 'boat', 'bottle', 'bus', 'car', 'cat',
+         'chair', 'cow', 'diningtable', 'dog', 'horse', 'motorbike', 'person',
+         'pottedplant', 'sheep', 'sofa', 'train', 'tvmonitor'),
+    # palette is a list of color tuples, which is used for visualization.
+    'palette': [(106, 0, 228), (119, 11, 32), (165, 42, 42), (0, 0, 192),
+                (197, 226, 255), (0, 60, 100), (0, 0, 142), (255, 77, 255),
+                (153, 69, 1), (120, 166, 157), (0, 182, 199),
+                (0, 226, 252), (182, 182, 255), (0, 0, 230), (220, 20, 60),
+                (163, 255, 0), (0, 82, 0), (3, 95, 161), (0, 80, 100),
+                (183, 130, 88)]
+}
 
 image_size = (1024, 1024)
 batch_augments = [
@@ -305,7 +320,12 @@ train_dataloader = dict(
     dataset=dict(
         pipeline=train_pipeline,
         dataset=dict(
-            filter_cfg=dict(filter_empty_gt=False), pipeline=load_pipeline)))
+            data_root=data_root,
+            metainfo=metainfo,
+            ann_file='annotations/voc07_train.json',
+            data_prefix=dict(img='./'),
+            filter_cfg=dict(filter_empty_gt=False),
+            pipeline=load_pipeline)))
 
 # follow ViTDet
 test_pipeline = [
@@ -319,7 +339,13 @@ test_pipeline = [
                    'scale_factor'))
 ]
 
-val_dataloader = dict(dataset=dict(pipeline=test_pipeline))
+val_dataloader = dict(
+    dataset=dict(
+        data_root=data_root,
+        metainfo=metainfo,
+        ann_file='annotations/voc07_val.json',
+        data_prefix=dict(img='./'),
+        pipeline=test_pipeline))
 test_dataloader = val_dataloader
 
 optim_wrapper = dict(
@@ -329,8 +355,12 @@ optim_wrapper = dict(
     clip_grad=dict(max_norm=0.1, norm_type=2),
     paramwise_cfg=dict(custom_keys={'backbone': dict(lr_mult=0.1)}))
 
-val_evaluator = dict(metric='bbox')
+val_evaluator = dict(
+    ann_file=data_root + 'annotations/voc07_val.json',
+    metric='bbox')
 test_evaluator = val_evaluator
+
+load_from = '/home/Huangzhe/test/co_dino_5scale_r50_lsj_8xb2_1x_coco/epoch_12.pth'
 
 max_epochs = 12
 train_cfg = dict(

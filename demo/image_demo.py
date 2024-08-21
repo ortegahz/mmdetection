@@ -79,7 +79,7 @@ def parse_args():
     parser.add_argument(
         '--out-dir',
         type=str,
-        default='outputs',
+        default='/home/Huangzhe/test/outputs',
         help='Output directory of images or prediction results.')
     # Once you input a format similar to $: xxx, it indicates that
     # the prompt is based on the dataset class name.
@@ -179,7 +179,7 @@ def main():
     inferencer = DetInferencer(**init_args)
 
     chunked_size = call_args.pop('chunked_size')
-    inferencer.model.test_cfg.chunked_size = chunked_size
+    # inferencer.model.test_cfg.chunked_size = chunked_size
 
     inferencer(**call_args)
 

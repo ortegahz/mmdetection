@@ -7,12 +7,18 @@ def wider_face_classes() -> list:
     return ['face']
 
 
+# def voc_classes() -> list:
+#     """Class names of PASCAL VOC."""
+#     return [
+#         'aeroplane', 'bicycle', 'bird', 'boat', 'bottle', 'bus', 'car', 'cat',
+#         'chair', 'cow', 'diningtable', 'dog', 'horse', 'motorbike', 'person',
+#         'pottedplant', 'sheep', 'sofa', 'train', 'tvmonitor'
+#     ]
+
 def voc_classes() -> list:
     """Class names of PASCAL VOC."""
     return [
-        'aeroplane', 'bicycle', 'bird', 'boat', 'bottle', 'bus', 'car', 'cat',
-        'chair', 'cow', 'diningtable', 'dog', 'horse', 'motorbike', 'person',
-        'pottedplant', 'sheep', 'sofa', 'train', 'tvmonitor'
+        'fire', 'candle_flame', 'round_fire',
     ]
 
 

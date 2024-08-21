@@ -8,6 +8,14 @@ num_dec_layer = 6
 loss_lambda = 2.0
 num_classes = 3
 
+data_root = '/home/Huangzhe/test/voc_fire/VOCdevkit/'
+metainfo = {
+    'classes':
+        ('fire', 'candle_flame', 'round_fire'),
+    # palette is a list of color tuples, which is used for visualization.
+    'palette': [(106, 0, 228), (119, 11, 32), (165, 42, 42)]
+}
+
 image_size = (1024, 1024)
 batch_augments = [
     dict(type='BatchFixedSizePad', size=image_size, pad_mask=True)
@@ -305,7 +313,12 @@ train_dataloader = dict(
     dataset=dict(
         pipeline=train_pipeline,
         dataset=dict(
-            filter_cfg=dict(filter_empty_gt=False), pipeline=load_pipeline)))
+            data_root=data_root,
+            metainfo=metainfo,
+            ann_file='annotations/voc07_train.json',
+            data_prefix=dict(img=''),
+            filter_cfg=dict(filter_empty_gt=False),
+            pipeline=load_pipeline)))
 
 # follow ViTDet
 test_pipeline = [
@@ -319,7 +332,13 @@ test_pipeline = [
                    'scale_factor'))
 ]
 
-val_dataloader = dict(dataset=dict(pipeline=test_pipeline))
+val_dataloader = dict(
+    dataset=dict(
+        data_root=data_root,
+        metainfo=metainfo,
+        ann_file='annotations/voc07_val.json',
+        data_prefix=dict(img=''),
+        pipeline=test_pipeline))
 test_dataloader = val_dataloader
 
 optim_wrapper = dict(
@@ -329,10 +348,18 @@ optim_wrapper = dict(
     clip_grad=dict(max_norm=0.1, norm_type=2),
     paramwise_cfg=dict(custom_keys={'backbone': dict(lr_mult=0.1)}))
 
-val_evaluator = dict(metric='bbox')
-test_evaluator = val_evaluator
+val_evaluator = dict(
+    ann_file=data_root + 'annotations/voc07_val.json',
+    metric='bbox')
 
-max_epochs = 12
+# test_evaluator = val_evaluator
+test_evaluator = dict(
+    ann_file=data_root + 'annotations/voc07_test.json',
+    metric='bbox')
+
+load_from = '/home/Huangzhe/test/co_dino_5scale_r50_lsj_8xb2_1x_coco/epoch_12.pth'
+
+max_epochs = 16
 train_cfg = dict(
     _delete_=True,
     type='EpochBasedTrainLoop',
