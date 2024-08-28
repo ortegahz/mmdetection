@@ -33,10 +33,21 @@ python demo/video_demo.py /home/Huangzhe/test/Z-D-30m-002.mp4 \
     /home/Huangzhe/test/work_dirs/co_dino_5scale_r50_lsj_8xb2_1x_fire/epoch_32.pth \
     --out /home/Huangzhe/test/result.mp4
 
-python demo/video_gpuaccel_demo.py /home/Huangzhe/test/Z-D-30m-002.mp4 \
-    projects/CO-DETR/configs/codino/co_dino_5scale_r50_lsj_8xb2_1x_fire.py \
-    /home/Huangzhe/test/work_dirs/co_dino_5scale_r50_lsj_8xb2_1x_fire/epoch_32.pth \
-    --out /home/Huangzhe/test/result.mp4
+python demo/image_demo.py /root/autodl-tmp/BOSH-FM数据采集-samples-merge \
+    projects/CO-DETR/configs/codino/co_dino_5scale_swin_l_2xb1_16e_o365tococo2fire.py \
+    --weights /root/autodl-tmp/work_dirs/co_dino_5scale_swin_l_2xb1_16e_o365tococo2fire/epoch_15.pth \
+    --device cuda:1
+
+python demo/video_demo.py /root/autodl-tmp/X-170m-001.mp4 \
+    projects/CO-DETR/configs/codino/co_dino_5scale_swin_l_2xb1_16e_o365tococo2fire.py \
+    /root/autodl-tmp/work_dirs/co_dino_5scale_swin_l_2xb1_16e_o365tococo2fire/epoch_15.pth \
+    --out /root/autodl-tmp/X-170m-001-res.mp4 \
+    --device cuda:0
+
+# wandb
+
+4ca6289368165f23d11b994b443ed6e1af5ad70b
+https://wandb.ai/
 
 # test
 
@@ -69,7 +80,11 @@ bash ./tools/dist_train.sh \
     8
 
 screen bash ./tools/dist_train.sh \
-    projects/CO-DETR/configs/codino/co_dino_5scale_swin_l_2xb1_16e_o365tococo2fire.py \
+    projects/CO-DETR/configs/codino/co_dino_5scale_swin_l_2xb1_o365tococo2fire.py \
+    2
+
+screen bash ./tools/dist_train.sh \
+    configs/soft_teacher/soft-teacher_faster-rcnn_r50-caffe_fpn_180k_semi-0.1-coco.py \
     2
 
 # data

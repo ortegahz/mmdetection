@@ -79,7 +79,7 @@ def parse_args():
     parser.add_argument(
         '--out-dir',
         type=str,
-        default='/home/Huangzhe/test/outputs',
+        default='outputs',
         help='Output directory of images or prediction results.')
     # Once you input a format similar to $: xxx, it indicates that
     # the prompt is based on the dataset class name.
