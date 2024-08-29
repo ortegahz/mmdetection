@@ -72,6 +72,10 @@ bash ./tools/dist_train.sh \
     8
 
 bash ./tools/dist_train.sh \
+    projects/CO-DETR/configs/codino/co_dino_5scale_r50_lsj_8xb1_1x_coco.py \
+    8
+
+bash ./tools/dist_train.sh \
     projects/CO-DETR/configs/codino/co_dino_5scale_r50_lsj_8xb2_1x_voc.py \
     8
 
@@ -86,6 +90,12 @@ screen bash ./tools/dist_train.sh \
 screen bash ./tools/dist_train.sh \
     configs/soft_teacher/soft-teacher_faster-rcnn_r50-caffe_fpn_180k_semi-0.1-coco.py \
     2
+
+bash ./tools/dist_train.sh \
+    projects/CO-DETR/configs/codino/co_dino_soft-teacher_semi-0.1-coco.py \
+    2
+
+python tools/train.py projects/CO-DETR/configs/codino/co_dino_soft-teacher_semi-0.1-coco.py 
 
 # data
 
